@@ -5,6 +5,7 @@
 #include "freertos/task.h"
 #include "../src/spi_write/spi_write.h"
 #define spi_read_bit_time 1e-4
+TaskHandle_t read_task=NULL;
 
 extern QueueHandle_t spi_read_Queue;
 struct spi_read_request{

@@ -8,6 +8,7 @@
 #define SDI  3
 #define SDO  4
 #define spi_write_bit_time 1e-4
+TaskHandle_t write_task=NULL;
 
 typedef struct{
     int chip_select;

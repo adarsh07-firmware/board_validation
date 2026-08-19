@@ -3,14 +3,12 @@
 #include "spi_read/spi_read.h"
 #include "freertos/task.h"
 
-TaskHandle_t spi_write_task=NULL;
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
   vTaskDelay(10/portTICK_PERIOD_MS);
-  xTaskCreatePinnedToCore(spi_write_Task,"spiwriteTask",1024,NULL,5,&spi_write_task,0);
-  xTaskCreatePinnedToCore(spi_read_task,"spireadTask",1024,NULL,5,&spi_write_task,0);
-
+  xTaskCreatePinnedToCore(spi_write_Task,"spiwriteTask",1024,NULL,5,&write_task,0);
+  xTaskCreatePinnedToCore(spi_read_task,"spireadTask",1024,NULL,5,&read_task,0);
 }
 
 void loop() {
