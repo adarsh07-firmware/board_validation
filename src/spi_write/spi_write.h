@@ -13,11 +13,11 @@ typedef struct{
     int chip_select;
     uint8_t addr;
     uint8_t data;
-}SPIRequest;
+}SPI_write_Request;
 
-extern QueueHandle_t spiQueue;
+extern QueueHandle_t spi_write_Queue;
 void spi_write_data_blocking(int chip_select,uint8_t addr,uint8_t data);
 bool spi_write_data(int chip_select,uint8_t addr,uint8_t data);
-void spiTask(void *parameter);
+void spi_write_Task(void *parameter);
 
 #endif
