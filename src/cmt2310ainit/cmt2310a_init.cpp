@@ -2,23 +2,26 @@
 #define SOFT_RST 0X7F
 
 void spi_initialise(){
-    digitalWrite(GPIO0,INPUT);
-    digitalWrite(GPIO1,INPUT);
-    digitalWrite(CSB,OUTPUT);    
-    digitalWrite(SCLK,OUTPUT);
-    digitalWrite(SDI,OUTPUT);
-    digitalWrite(SDO,OUTPUT);
+    pinMode(GPIO0,INPUT);
+    pinMode(GPIO1,INPUT);
+    pinMode(CSB,OUTPUT);    
+    pinMode(SCLK,OUTPUT);
+    pinMode(SDI,OUTPUT);
+    pinMode(SDO,INPUT);
 }
 
 void spi_wire_cs(){
-    uint8_t data=(spi_read_data(CSB,CTL_REG_7)&0xF7);
-    spi_write_data(CSB,CTL_REG_7,data);
+    uint8_t data=(spi_read(CSB,CTL_REG_7)&0xF7);
+    spi_write(CSB,CTL_REG_7,data);
 }
 
 void soft_reset(){
-    spi_write_data(CSB,SOFT_RST,0xFF);
+    spi_write(CSB,SOFT_RST,0xFF);
 }
 
 void cmt2310a_initialise(){
-    spi_ini
+    spi_initialise();
+    spi_wire_cs();
+    soft_reset();
+    delay(20);
 }

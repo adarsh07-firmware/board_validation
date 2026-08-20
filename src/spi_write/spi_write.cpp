@@ -1,7 +1,6 @@
 #include "spi_write.h"
 
 void spi_write(int chip_select,uint8_t addr,uint8_t data){
-    Serial.println("came here to write at the port");
     //IDLE CONDITION
     digitalWrite(chip_select,HIGH);
     digitalWrite(SCLK,LOW);
@@ -38,24 +37,7 @@ void spi_write(int chip_select,uint8_t addr,uint8_t data){
     }
 
     //IDLE CONDITION
-    vTaskDelay(0.5*spi_write_bit_time/portTICK_PERIOD_MS);
+    delayMicroseconds(spi_write_bit_time);
     digitalWrite(chip_select,HIGH);
     digitalWrite(SCLK,LOW);
-}
-
-void spi_write_Task(void *parameter){
-    spi_write_Queue=xQueueCreate(10,sizeof(SPI_write_Request));
-    SPI_write_Request request;
-    while(1){
-        if(xQueueReceive(spi_write_Queue,&request,portMAX_DELAY)==pdTRUE) spi_write(request.chip_select,request.addr,request.data);
-    }
-}
-
-bool spi_write_data(int chip_select,uint8_t addr,uint8_t data){
-    SPI_write_Request request;
-    request.chip_select=chip_select;
-    request.addr=addr;
-    request.data=data;
-    bool isdone=(xQueueSend(spi_write_Queue,&request,0)==pdTRUE);
-    if(!isdone) Serial.println("SPI write queue is full");
 }

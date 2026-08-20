@@ -10,4 +10,5 @@
 void spi_initialise();
 void spi_wire_cs();
 void cmt2310a_initialise();
-#endif CMT2310A_H
+
+#endif 

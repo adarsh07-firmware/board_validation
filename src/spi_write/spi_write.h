@@ -3,22 +3,9 @@
 
 #include<Arduino.h>
 #include "freertos/task.h"
-#define CSB 1
-#define SCLK 2
-#define SDI  3
-#define SDO  4
 #define spi_write_bit_time 1
-TaskHandle_t write_task=NULL;
+#include "params/params.h"
 
-typedef struct{
-    int chip_select;
-    uint8_t addr;
-    uint8_t data;
-}SPI_write_Request;
-
-extern QueueHandle_t spi_write_Queue;
-void spi_write_data_blocking(int chip_select,uint8_t addr,uint8_t data);
-bool spi_write_data(int chip_select,uint8_t addr,uint8_t data);
-void spi_write_Task(void *parameter);
+void spi_write(int chip_select,uint8_t addr,uint8_t data);
 
 #endif
