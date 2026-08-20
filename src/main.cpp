@@ -6,6 +6,7 @@
 #include "params/params.h"
 #include "cmt2310a_config/cmt2310a_params.h"
 #include "cmt2310a_config/cmt2310a_config.h"
+#include "rf_config/rf_config.h"
 
 void setup(){
     Serial.begin(115200);
@@ -14,8 +15,10 @@ void setup(){
     uint8_t cur_status_chip=spi_read(CSB,CTL_REG_10);
     if(cur_status_chip!=0x00) Serial.println("Soft reset is not working !");
     else Serial.println("Initialization step is done successfully");
-    write_page0_reg();
-    write_page1_reg();
+    cmt2310a_configuration();
+    if(spi_read(CSB,CTL_REG_10)==0X81) Serial.println("Successfully configured the chip");
+    else Serial.println("Error while configuration of the chip");
+    rf_configuration();
 }
 
 void loop(){

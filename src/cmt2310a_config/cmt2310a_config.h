@@ -8,5 +8,6 @@
 
 void write_page0_reg();
 void write_page1_reg();
-void test_write();
+void power_boot();
+void cmt2310a_configuration()
 #endif
