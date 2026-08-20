@@ -5,35 +5,35 @@ void spi_write(int chip_select,uint8_t addr,uint8_t data){
     //IDLE CONDITION
     digitalWrite(chip_select,HIGH);
     digitalWrite(SCLK,LOW);
-    vTaskDelay(2*spi_write_bit_time/portTICK_PERIOD_MS);
+    delayMicroseconds(spi_write_bit_time);
 
     //START WRITING 
     digitalWrite(chip_select,LOW);
-    vTaskDelay(0.5*spi_write_bit_time/portTICK_PERIOD_MS);
+    delayMicroseconds(spi_write_bit_time);
     //Writing 0
-    vTaskDelay(spi_write_bit_time/portTICK_PERIOD_MS);
+    delayMicroseconds(spi_write_bit_time);
     digitalWrite(SDI,0);
     digitalWrite(SCLK,HIGH);
-    vTaskDelay(spi_write_bit_time/portTICK_PERIOD_MS);
+    delayMicroseconds(spi_write_bit_time);
     digitalWrite(SCLK,LOW);
 
     //Writing the address
     for(int i=6;i>=0;i--){
         uint8_t bit=((addr>>i)&1);
-        vTaskDelay(spi_write_bit_time/portTICK_PERIOD_MS);
+        delayMicroseconds(spi_write_bit_time);
         digitalWrite(SDI,bit);
         digitalWrite(SCLK,HIGH);
-        vTaskDelay(spi_write_bit_time/portTICK_PERIOD_MS);
+        delayMicroseconds(spi_write_bit_time);
         digitalWrite(SCLK,LOW);
     }
 
     //Writing the data
     for(int i=7;i>=0;i--){
         uint8_t bit=((data>>i)&1);
-        vTaskDelay(spi_write_bit_time/portTICK_PERIOD_MS);
+        delayMicroseconds(spi_write_bit_time);
         digitalWrite(SDI,bit);
         digitalWrite(SCLK,HIGH);
-        vTaskDelay(spi_write_bit_time/portTICK_PERIOD_MS);
+        delayMicroseconds(spi_write_bit_time);
         digitalWrite(SCLK,LOW);
     }
 
@@ -56,5 +56,6 @@ bool spi_write_data(int chip_select,uint8_t addr,uint8_t data){
     request.chip_select=chip_select;
     request.addr=addr;
     request.data=data;
-    return xQueueSend(spi_write_Queue,&request,0)==pdTRUE;
+    bool isdone=(xQueueSend(spi_write_Queue,&request,0)==pdTRUE);
+    if(!isdone) Serial.println("SPI write queue is full");
 }
