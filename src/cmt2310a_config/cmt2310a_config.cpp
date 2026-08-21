@@ -1,4 +1,5 @@
 #include "cmt2310a_config/cmt2310a_config.h"
+
 void write_page0_reg(){
     Serial.println(spi_read(CSB,PAGE_CTL));
     uint8_t data=(spi_read(CSB,PAGE_CTL)&0x3F);
@@ -15,7 +16,7 @@ void write_page1_reg(){
     uint8_t data = spi_read(CSB, PAGE_CTL);
     if ((data & 0xC0) == 0x40) Serial.println("Successfully switched to PAGE 1");
     else Serial.println("ERROR switching to PAGE 1");
-    for(uint8_t i=0;i<=(uint8_t) 0x6F;i++) spi_write(CSB,CRW_PORT,(uint8_t)g_cmt2310a_page1[i]);
+    for(uint8_t i=0x80;i<=(uint8_t) 0xEF;i++) spi_write(CSB,CRW_PORT,(uint8_t)g_cmt2310a_page1[i-80]);
 }
 
 //Currently disabled now 
@@ -37,4 +38,12 @@ void power_boot(){
     else Serial.println("Successfully switched to page0 register");
     spi_write(CSB,CTL_REG_0,0x03);
     delay(5);
+    if(spi_read(CSB,CTL_REG_0)==0x03) Serial.println("Successfully power boot the chip");
+    else Serial.println("Error while power booting the chip");
+} 
+
+void cmt2310a_configuration(){
+    write_page0_reg();
+    write_page1_reg();
+    power_boot();
 }

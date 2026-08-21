@@ -7,6 +7,7 @@
 #include "cmt2310a_config/cmt2310a_params.h"
 #include "cmt2310a_config/cmt2310a_config.h"
 #include "rf_config/rf_config.h"
+#include "rf_start_comm/rf_comm.h"
 
 void setup(){
     Serial.begin(115200);
@@ -19,9 +20,27 @@ void setup(){
     if(spi_read(CSB,CTL_REG_10)==0X81) Serial.println("Successfully configured the chip");
     else Serial.println("Error while configuration of the chip");
     rf_configuration();
+    Serial.println("Starting the tx : ");
+    Serial.print("Current state is : ");
+    Serial.println(spi_read(CSB,CTL_REG_10),HEX);
+    cmt2310a_start_tx();
+}
+
+void auto_exit_state(){
+    uint8_t data=(spi_read(CSB,0x60)&0x8F);
+    data=data | 0x10;
+    spi_write(CSB,0x60,data);
 }
 
 void loop(){
-
+    Serial.print("Current state of chip is : ");
+    Serial.println(spi_read(CSB,CTL_REG_10),HEX);
+    auto_exit_state();
+    spi_write(CSB,CTL_REG_1,0x01);
+    delay(3000);
+    // delay(5000);
+    // clear_fifo();
+    // write_fifo();
+    // send_tx();
 }
 

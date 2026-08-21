@@ -8,4 +8,5 @@
 void go_ready();
 void ir_caliberation();
 void rf_configuration();
+void go_sleep();
 #endif

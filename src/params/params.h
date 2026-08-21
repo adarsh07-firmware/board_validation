@@ -9,4 +9,5 @@
 #define CTL_REG_0 0x00 //Power boot
 #define CTL_REG_1 0x01 //chip state change
 #define CTL_REG_8 0x08 //Do IR caliberation
-#define CTL_REG_9 0x09 //F IR caliberation
+#define CTL_REG_9 0x09 //Feedback of  IR caliberation
+#define CTL_REG_27 0x1B //clear the tx fifo
