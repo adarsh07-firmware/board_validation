@@ -16,7 +16,7 @@ void write_page1_reg(){
     uint8_t data = spi_read(CSB, PAGE_CTL);
     if ((data & 0xC0) == 0x40) Serial.println("Successfully switched to PAGE 1");
     else Serial.println("ERROR switching to PAGE 1");
-    for(uint8_t i=0x80;i<=(uint8_t) 0xEF;i++) spi_write(CSB,CRW_PORT,(uint8_t)g_cmt2310a_page1[i-80]);
+    for(uint8_t i=0x80;i<=(uint8_t) 0xEF;i++) spi_write(CSB,CRW_PORT,(uint8_t)g_cmt2310a_page1[i-(uint8_t)0x80]);
 }
 
 //Currently disabled now 
