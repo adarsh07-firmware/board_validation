@@ -5,9 +5,11 @@ void clear_fifo(){
 }
 
 void write_fifo(){
-    uint8_t data = 0x8F;
-    spi_write(CSB, FIFO_PORT, data);
-    delay(5);
+    for(int i=0;i<32;i++){
+        uint8_t data = 0x8F;
+        spi_write(CSB, FIFO_PORT, data);
+        delay(15);
+    }
 }
 
 void send_tx(){
@@ -15,11 +17,11 @@ void send_tx(){
     if(status==0x82) Serial.println("[send_tx()] Cheap is ready to receive");
     else Serial.println("[send_tx()] Cheap is not ready");
     spi_write(CSB, CTL_REG_1, 0x04);
-    delay(5);
-    if(spi_read(CSB,CTL_REG_10)==0xA0) Serial.println("[send_tx()] Tx state is confirmed");
+    delay(500);
+    uint8_t final_status = spi_read(CSB,CTL_REG_10);
+    if(final_status!=0xA0) Serial.printf("[send_tx()] Tx completed, final state: 0x%02X\n", final_status);
     else {
-        Serial.println("[send_tx()] Tx state is not achieved: ");
-        delay(10000);
+        Serial.println("[send_tx()] Tx is still active after 500 ms");
     }
 }
 

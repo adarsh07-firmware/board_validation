@@ -7,7 +7,7 @@ void write_page0_reg(){
     data=(spi_read(CSB,PAGE_CTL)&0xC0);
     if(data!=0) Serial.println("Error while switching in page 0");
     else Serial.println("Successfully switched to page0 register");
-    for(int i=28;i<=77;i++) spi_write(CSB,FIFO_PORT,(uint8_t)g_cmt2310a_page0[i-28]);
+    for(int i=28;i<=77;i++) spi_write(CSB,CRW_PORT,(uint8_t)g_cmt2310a_page0[i-28]);
 }
 
 void write_page1_reg(){
